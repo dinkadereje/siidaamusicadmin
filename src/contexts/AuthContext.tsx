@@ -1,6 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
+import { logger } from '@/lib/logger'
 
 interface User {
   id: number
@@ -44,20 +45,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Check for existing token on mount
   useEffect(() => {
+    logger.info('AUTH', 'Initializing authentication context')
+    
     const savedToken = localStorage.getItem('admin_token')
     const savedUser = localStorage.getItem('admin_user')
     
     if (savedToken && savedUser) {
-      setToken(savedToken)
-      setUser(JSON.parse(savedUser))
+      try {
+        const userData = JSON.parse(savedUser)
+        setToken(savedToken)
+        setUser(userData)
+        logger.info('AUTH', `Restored session for user: ${userData.username}`)
+      } catch (error) {
+        logger.error('AUTH', 'Failed to parse saved user data', error as Error)
+        // Clear corrupted data
+        localStorage.removeItem('admin_token')
+        localStorage.removeItem('admin_user')
+        localStorage.removeItem('admin_refresh_token')
+      }
+    } else {
+      logger.info('AUTH', 'No saved session found')
     }
     
     setIsLoading(false)
   }, [])
 
   const login = async (username: string, password: string) => {
+    logger.authAttempt(username)
+    
     try {
       setIsLoading(true)
+      
+      logger.info('AUTH', `Attempting login for user: ${username}`, {
+        apiUrl: API_BASE_URL,
+        timestamp: new Date().toISOString(),
+      })
       
       // Get JWT token
       const tokenResponse = await fetch(`${API_BASE_URL}/api/token/`, {
@@ -68,13 +90,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         body: JSON.stringify({ username, password }),
       })
 
+      logger.info('AUTH', `Token request response: ${tokenResponse.status}`, {
+        ok: tokenResponse.ok,
+        statusText: tokenResponse.statusText,
+        url: tokenResponse.url,
+      })
+
       if (!tokenResponse.ok) {
         const errorData = await tokenResponse.json()
-        throw new Error(errorData.detail || 'Invalid credentials')
+        const errorMessage = errorData.detail || 'Invalid credentials'
+        logger.authFailure(username, errorMessage)
+        throw new Error(errorMessage)
       }
 
       const tokenData = await tokenResponse.json()
       const accessToken = tokenData.access
+      
+      logger.info('AUTH', 'Token received successfully', {
+        hasAccessToken: !!accessToken,
+        hasRefreshToken: !!tokenData.refresh,
+      })
 
       // Get user profile
       const profileResponse = await fetch(`${API_BASE_URL}/api/user/profile/`, {
@@ -84,11 +119,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         },
       })
 
+      logger.info('AUTH', `Profile request response: ${profileResponse.status}`, {
+        ok: profileResponse.ok,
+        statusText: profileResponse.statusText,
+      })
+
       if (!profileResponse.ok) {
-        throw new Error('Failed to fetch user profile')
+        const errorMessage = 'Failed to fetch user profile'
+        logger.error('AUTH', errorMessage, new Error(`Profile fetch failed: ${profileResponse.status}`))
+        throw new Error(errorMessage)
       }
 
       const userData = await profileResponse.json()
+      
+      logger.info('AUTH', 'User profile received', {
+        userId: userData.id,
+        username: userData.username,
+        email: userData.email,
+        isStaff: userData.is_staff,
+        isSuperuser: userData.is_superuser,
+      })
 
       // Save to localStorage
       localStorage.setItem('admin_token', accessToken)
@@ -97,7 +147,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setToken(accessToken)
       setUser(userData)
+      
+      logger.authSuccess(username)
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown login error'
+      logger.authFailure(username, errorMessage)
       console.error('Login error:', error)
       throw error
     } finally {
@@ -106,6 +160,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }
 
   const logout = () => {
+    const currentUser = user?.username || 'unknown'
+    logger.authLogout()
+    logger.info('AUTH', `User ${currentUser} logged out`)
+    
     localStorage.removeItem('admin_token')
     localStorage.removeItem('admin_user')
     localStorage.removeItem('admin_refresh_token')

@@ -21,7 +21,8 @@ import {
     Home,
     BarChart3,
     LogOut,
-    User
+    User,
+    Activity
 } from "lucide-react"
 
 const navigation = [
@@ -32,6 +33,7 @@ const navigation = [
     { name: "Users", href: "/users", icon: Users },
     { name: "Payments", href: "/payments", icon: CreditCard },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
+    { name: "Logs", href: "/logs", icon: Activity },
     { name: "Settings", href: "/settings", icon: Settings },
 ]
 

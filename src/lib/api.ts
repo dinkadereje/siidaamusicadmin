@@ -1,6 +1,15 @@
 // API configuration and service functions for Siidaa Music Admin
+import { logger } from './logger'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://13.60.30.188:8000'
+
+// Log environment information
+logger.environment({
+  API_BASE_URL,
+  NODE_ENV: process.env.NODE_ENV,
+  userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : 'Server',
+  timestamp: new Date().toISOString(),
+})
 
 // Types based on Django models
 export interface Artist {
@@ -88,6 +97,8 @@ class ApiService {
 
     private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
         const url = `${this.baseUrl}/api${endpoint}`
+        const method = options?.method || 'GET'
+        const startTime = Date.now()
 
         // Get token from localStorage
         const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null
@@ -102,11 +113,27 @@ class ApiService {
             ...options,
         }
 
+        // Log the request
+        logger.apiRequest(method, url, {
+            hasToken: !!token,
+            isFormData: options?.body instanceof FormData,
+            headers: Object.keys(config.headers || {}),
+        })
+
         try {
             const response = await fetch(url, config)
+            const duration = Date.now() - startTime
+
+            // Log the response
+            logger.apiResponse(method, url, response.status, duration, {
+                ok: response.ok,
+                statusText: response.statusText,
+                contentType: response.headers.get('content-type'),
+            })
 
             if (!response.ok) {
                 if (response.status === 401) {
+                    logger.error('AUTH', 'Token expired or invalid', new Error(`401 Unauthorized: ${url}`))
                     // Token might be expired, try to refresh or redirect to login
                     if (typeof window !== 'undefined') {
                         localStorage.removeItem('admin_token')
@@ -115,11 +142,25 @@ class ApiService {
                         window.location.href = '/login'
                     }
                 }
-                throw new Error(`HTTP error! status: ${response.status}`)
+                
+                const errorMessage = `HTTP error! status: ${response.status}`
+                const error = new Error(errorMessage)
+                logger.apiError(method, url, error, duration)
+                throw error
             }
 
-            return await response.json()
+            const data = await response.json()
+            logger.debug('API', `${method} ${url} - Response data received`, {
+                dataType: Array.isArray(data) ? `array[${data.length}]` : typeof data,
+                hasData: !!data,
+            })
+
+            return data
         } catch (error) {
+            const duration = Date.now() - startTime
+            const apiError = error instanceof Error ? error : new Error('Unknown API error')
+            
+            logger.apiError(method, url, apiError, duration)
             console.error(`API request failed for ${endpoint}:`, error)
             throw error
         }
