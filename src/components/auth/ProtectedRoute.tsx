@@ -20,8 +20,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
       return
     }
 
-    // Don't redirect if we're already on the login page
-    if (pathname === '/login') {
+    // Don't redirect if we're on public pages
+    if (pathname === '/login' || pathname === '/debug-public') {
       return
     }
 
@@ -43,8 +43,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     )
   }
 
-  // If on login page, always show children
-  if (pathname === '/login') {
+  // If on public pages, always show children
+  if (pathname === '/login' || pathname === '/debug-public') {
     return <>{children}</>
   }
 

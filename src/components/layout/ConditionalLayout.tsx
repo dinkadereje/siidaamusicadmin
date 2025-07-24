@@ -10,8 +10,8 @@ interface ConditionalLayoutProps {
 export default function ConditionalLayout({ children }: ConditionalLayoutProps) {
   const pathname = usePathname()
   
-  // Don't wrap login page with AdminLayout
-  if (pathname === '/login') {
+  // Don't wrap public pages with AdminLayout
+  if (pathname === '/login' || pathname === '/debug-public') {
     return <>{children}</>
   }
   
