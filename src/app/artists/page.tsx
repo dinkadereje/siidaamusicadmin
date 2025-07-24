@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Plus, Edit, Trash2, Music } from "lucide-react"
-import { apiService, getImageUrl, type Artist, type Album, type Song } from "@/lib/api"
+import { apiService, getImageUrl, type Artist, type Album } from "@/lib/api"
 import ArtistForm from "@/components/forms/ArtistForm"
 import DeleteDialog from "@/components/ui/delete-dialog"
 
@@ -87,7 +87,7 @@ export default function ArtistsPage() {
       await apiService.deleteArtist(deleteDialog.artist.id)
       await fetchArtists() // Refresh the list
       setDeleteDialog({ open: false, artist: null })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete artist:', err)
       setError('Failed to delete artist')
     } finally {

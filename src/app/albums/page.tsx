@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Plus, Edit, Trash2, Music, Calendar } from "lucide-react"
 import Image from "next/image"
-import { apiService, getImageUrl, formatPrice, formatDate, type Album, type Song } from "@/lib/api"
+import { apiService, getImageUrl, formatPrice, formatDate, type Album } from "@/lib/api"
 import AlbumForm from "@/components/forms/AlbumForm"
 import DeleteDialog from "@/components/ui/delete-dialog"
 import AlbumSongsDialog from "@/components/album/AlbumSongsDialog"
@@ -86,7 +86,7 @@ export default function AlbumsPage() {
       await apiService.deleteAlbum(deleteDialog.album.id)
       await fetchAlbums() // Refresh the list
       setDeleteDialog({ open: false, album: null })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete album:', err)
       setError('Failed to delete album')
     } finally {
@@ -245,6 +245,13 @@ export default function AlbumsPage() {
         title="Delete Album"
         description={`Are you sure you want to delete "${deleteDialog.album?.title}"? This action cannot be undone and will also delete all associated songs.`}
         loading={deleteLoading}
+      />
+
+      {/* Album Songs Dialog */}
+      <AlbumSongsDialog
+        open={songsDialogOpen}
+        onOpenChange={setSongsDialogOpen}
+        album={selectedAlbum}
       />
     </div>
   )
