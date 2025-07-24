@@ -105,8 +105,9 @@ export default function SongForm({ open, onOpenChange, song, defaultAlbumId, onS
       
       onSuccess()
       onOpenChange(false)
-    } catch (err: any) {
-      setError(err.message || 'Failed to save song')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save song'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

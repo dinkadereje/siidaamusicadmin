@@ -17,7 +17,12 @@ interface DashboardStats {
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null)
-  const [recentActivity, setRecentActivity] = useState<any[]>([])
+  const [recentActivity, setRecentActivity] = useState<{
+    type: string
+    name: string
+    time: string
+    status: string
+  }[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -43,7 +48,7 @@ export default function Dashboard() {
           }))
 
         setRecentActivity(recentTransactions)
-      } catch (err) {
+      } catch (err: unknown) {
         console.error('Failed to fetch dashboard data:', err)
         setError('Failed to load dashboard data')
       } finally {

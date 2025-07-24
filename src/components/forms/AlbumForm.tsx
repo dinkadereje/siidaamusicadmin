@@ -93,8 +93,9 @@ export default function AlbumForm({ open, onOpenChange, album, onSuccess }: Albu
       
       onSuccess()
       onOpenChange(false)
-    } catch (err: any) {
-      setError(err.message || 'Failed to save album')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save album'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

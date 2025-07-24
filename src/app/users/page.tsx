@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Plus, Edit, Trash2, Mail, Calendar, CreditCard } from "lucide-react"
-import { apiService, formatDate, type User, type Purchase, type PaymentTransaction } from "@/lib/api"
+import { apiService, formatDate, type User } from "@/lib/api"
 import UserForm from "@/components/forms/UserForm"
 import DeleteDialog from "@/components/ui/delete-dialog"
 
@@ -122,7 +122,7 @@ export default function UsersPage() {
       
       await fetchUsers() // Refresh the list
       setDeleteDialog({ open: false, user: null })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete user:', err)
       setError('Failed to delete user')
     } finally {

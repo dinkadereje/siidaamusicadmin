@@ -53,8 +53,9 @@ export default function ArtistForm({ open, onOpenChange, artist, onSuccess }: Ar
       // Reset form
       setFormData({ name: '', bio: '' })
       setImageFile(null)
-    } catch (err: any) {
-      setError(err.message || 'Failed to save artist')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save artist'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

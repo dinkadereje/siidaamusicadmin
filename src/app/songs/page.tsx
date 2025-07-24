@@ -77,7 +77,7 @@ export default function SongsPage() {
       await apiService.deleteSong(deleteDialog.song.id)
       await fetchSongs() // Refresh the list
       setDeleteDialog({ open: false, song: null })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete song:', err)
       setError('Failed to delete song')
     } finally {

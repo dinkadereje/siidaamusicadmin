@@ -1,16 +1,20 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { apiService } from "@/lib/api"
 
 export default function TestApiPage() {
-  const [results, setResults] = useState<any>({})
+  const [results, setResults] = useState<Record<string, {
+    success: boolean
+    data: unknown
+    error: string | null
+  }>>({})
   const [loading, setLoading] = useState(false)
 
-  const testEndpoint = async (name: string, testFn: () => Promise<any>) => {
+  const testEndpoint = async (name: string, testFn: () => Promise<unknown>) => {
     try {
       const result = await testFn()
       setResults(prev => ({
@@ -20,7 +24,7 @@ export default function TestApiPage() {
     } catch (error) {
       setResults(prev => ({
         ...prev,
-        [name]: { success: false, data: null, error: error.message }
+        [name]: { success: false, data: null, error: error instanceof Error ? error.message : 'Unknown error' }
       }))
     }
   }
@@ -61,7 +65,7 @@ export default function TestApiPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {Object.entries(results).map(([name, result]: [string, any]) => (
+        {Object.entries(results).map(([name, result]) => (
           <Card key={name}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{name}</CardTitle>

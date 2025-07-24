@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -34,7 +34,7 @@ export default function AlbumSongsDialog({ open, onOpenChange, album }: AlbumSon
   })
   const [deleteLoading, setDeleteLoading] = useState(false)
 
-  const fetchAlbumSongs = async () => {
+  const fetchAlbumSongs = useCallback(async () => {
     if (!album) return
 
     try {
@@ -59,13 +59,13 @@ export default function AlbumSongsDialog({ open, onOpenChange, album }: AlbumSon
     } finally {
       setLoading(false)
     }
-  }
+  }, [album])
 
   useEffect(() => {
     if (open && album) {
       fetchAlbumSongs()
     }
-  }, [open, album])
+  }, [open, album, fetchAlbumSongs])
 
   const handleAddSong = () => {
     setEditingSong(null)
@@ -89,7 +89,7 @@ export default function AlbumSongsDialog({ open, onOpenChange, album }: AlbumSon
       await apiService.deleteSong(deleteDialog.song.id)
       await fetchAlbumSongs() // Refresh the list
       setDeleteDialog({ open: false, song: null })
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Failed to delete song:', err)
       setError('Failed to delete song')
     } finally {
