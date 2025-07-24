@@ -35,7 +35,7 @@ export interface Song {
     price: string
     is_free: boolean
     lyrics?: string
-    synced_lyrics?: any
+    synced_lyrics?: Record<string, unknown>
 }
 
 export interface User {

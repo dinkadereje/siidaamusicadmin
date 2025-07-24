@@ -239,7 +239,7 @@ export default function AlbumSongsDialog({ open, onOpenChange, album }: AlbumSon
         onOpenChange={(open) => setDeleteDialog({ open, song: null })}
         onConfirm={confirmDelete}
         title="Delete Song"
-        description={`Are you sure you want to delete "${deleteDialog.song?.title}"? This action cannot be undone.`}
+        description={`Are you sure you want to delete &quot;${deleteDialog.song?.title}&quot;? This action cannot be undone.`}
         loading={deleteLoading}
       />
     </>

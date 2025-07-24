@@ -113,6 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const refreshToken = async () => {
     try {
       const refreshToken = localStorage.getItem('admin_refresh_token')

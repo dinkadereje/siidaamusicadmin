@@ -60,8 +60,9 @@ export default function UserForm({ open, onOpenChange, user, onSuccess }: UserFo
       
       onSuccess()
       onOpenChange(false)
-    } catch (err: any) {
-      setError(err.message || 'Failed to save user')
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save user'
+      setError(errorMessage)
     } finally {
       setLoading(false)
     }

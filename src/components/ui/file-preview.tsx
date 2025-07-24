@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { X, Eye, Download } from "lucide-react"
+import { X, Eye } from "lucide-react"
 import Image from "next/image"
 
 interface FilePreviewProps {
