@@ -322,17 +322,6 @@ export default function LoggingDashboard() {
                                                         {log.error.message}
                                                     </p>
                                                 )}
-
-                                                {log.data && (
-                                                    <details className="mt-2">
-                                                        <summary className="text-xs text-muted-foreground cursor-pointer">
-                                                            View Data
-                                                        </summary>
-                                                        <pre className="text-xs bg-muted p-2 rounded mt-1 overflow-auto">
-                                                            {JSON.stringify(log.data, null, 2)}
-                                                        </pre>
-                                                    </details>
-                                                )}
                                             </div>
                                         </div>
                                     ))}
