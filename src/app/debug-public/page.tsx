@@ -8,7 +8,6 @@ import { Input } from "@/components/ui/input"
 import { 
   Activity, 
   AlertCircle, 
-  CheckCircle, 
   Database, 
   Globe, 
   Shield, 
@@ -86,7 +85,7 @@ export default function PublicDebugPage() {
           try {
             const data = await response.text()
             results += `📄 Response: ${data.substring(0, 200)}${data.length > 200 ? '...' : ''}\n`
-          } catch (e) {
+          } catch {
             results += `📄 Response: Could not read response body\n`
           }
         }
@@ -335,21 +334,21 @@ export default function PublicDebugPage() {
             <div className="space-y-2">
               <h4 className="font-medium">Step 1: Check Environment</h4>
               <p className="text-sm text-muted-foreground">
-                Click "Get Environment Info" to verify that NEXT_PUBLIC_API_URL is set correctly in Vercel.
+                Click &quot;Get Environment Info&quot; to verify that NEXT_PUBLIC_API_URL is set correctly in Vercel.
               </p>
             </div>
             
             <div className="space-y-2">
               <h4 className="font-medium">Step 2: Test API Connection</h4>
               <p className="text-sm text-muted-foreground">
-                Click "Test API Connection" to verify that Vercel can reach your Django backend.
+                Click &quot;Test API Connection&quot; to verify that Vercel can reach your Django backend.
               </p>
             </div>
             
             <div className="space-y-2">
               <h4 className="font-medium">Step 3: Test Login Flow</h4>
               <p className="text-sm text-muted-foreground">
-                Enter your Django admin credentials and click "Test Login Flow" to see exactly where the login fails.
+                Enter your Django admin credentials and click &quot;Test Login Flow&quot; to see exactly where the login fails.
               </p>
             </div>
             
