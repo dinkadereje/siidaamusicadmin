@@ -110,7 +110,7 @@ export default function AlbumSongsDialog({ open, onOpenChange, album }: AlbumSon
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
               <div>
-                Songs in "{album.title}"
+                Songs in &quot;{album.title}&quot;
                 <div className="text-sm font-normal text-muted-foreground mt-1">
                   by {album.artist.name} • {songs.length} tracks
                 </div>
