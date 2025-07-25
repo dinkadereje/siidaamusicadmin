@@ -41,7 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188:8000'
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188'
 
   // Check for existing token on mount
   useEffect(() => {

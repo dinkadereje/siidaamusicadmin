@@ -49,7 +49,7 @@ export default function PublicDebugPage() {
     setIsLoading(true)
     setTestResults("Testing API connectivity...\n")
     
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188:8000'
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188'
     const endpoints = [
       '/api/health/',
       '/api/token/',
@@ -117,7 +117,7 @@ export default function PublicDebugPage() {
     setIsLoading(true)
     setTestResults("Testing login flow...\n")
     
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188:8000'
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188'
     let results = `Testing login for user: ${username}\n\n`
     
     try {
@@ -245,7 +245,7 @@ export default function PublicDebugPage() {
             )}
             
             <div className="text-sm text-muted-foreground space-y-1">
-              <p><strong>Expected API URL:</strong> https://13.60.30.188:8000</p>
+              <p><strong>Expected API URL:</strong> https://13.60.30.188</p>
               <p><strong>Current API URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'Not set'}</p>
               <p><strong>Environment:</strong> {process.env.NODE_ENV || 'unknown'}</p>
             </div>

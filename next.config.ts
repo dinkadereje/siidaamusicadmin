@@ -6,13 +6,11 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: '13.60.30.188',
-        port: '8000',
         pathname: '/**',
       },
       {
         protocol: 'http',
         hostname: '13.60.30.188',
-        port: '8000',
         pathname: '/**',
       },
       {
