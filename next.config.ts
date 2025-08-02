@@ -5,12 +5,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '13.60.30.188',
+        hostname: 'faayaa.siidaatech.com',
         pathname: '/**',
       },
       {
         protocol: 'http',
-        hostname: '13.60.30.188',
+        hostname: 'faayaa.siidaatech.com',
         pathname: '/**',
       },
       {

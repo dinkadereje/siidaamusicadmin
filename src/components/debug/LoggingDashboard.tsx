@@ -118,7 +118,7 @@ export default function LoggingDashboard() {
     const testConnectivity = async () => {
         logger.info('NETWORK', 'Manual connectivity test initiated')
 
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://13.60.30.188:8000'
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://faayaa.siidaatech.com'
         const startTime = Date.now()
 
         try {

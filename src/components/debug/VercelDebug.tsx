@@ -23,7 +23,7 @@ export default function VercelDebug() {
 
   const testApiConnection = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://13.60.30.188:8000'
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://faayaa.siidaatech.com'
       const response = await fetch(`${apiUrl}/api/health/`, {
         method: 'GET',
         headers: {
@@ -80,7 +80,7 @@ export default function VercelDebug() {
         )}
         
         <div className="text-sm text-muted-foreground">
-          <p><strong>Expected API URL:</strong> http://13.60.30.188:8000</p>
+          <p><strong>Expected API URL:</strong> http://faayaa.siidaatech.com</p>
           <p><strong>Current API URL:</strong> {process.env.NEXT_PUBLIC_API_URL || 'Not set'}</p>
         </div>
       </CardContent>

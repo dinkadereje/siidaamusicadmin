@@ -56,7 +56,7 @@ export default function TestApiPage() {
         <div>
           <h2 className="text-3xl font-bold tracking-tight">API Connection Test</h2>
           <p className="text-muted-foreground">
-            Test connection to Django backend at: {process.env.NEXT_PUBLIC_API_URL || 'http://13.60.30.188:8000'}
+            Test connection to Django backend at: {process.env.NEXT_PUBLIC_API_URL || 'http://faayaa.siidaatech.com'}
           </p>
         </div>
         <Button onClick={runAllTests} disabled={loading}>

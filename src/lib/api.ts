@@ -1,7 +1,7 @@
 // API configuration and service functions for Siidaa Music Admin
 import { logger } from './logger'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://13.60.30.188'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://faayaa.siidaatech.com'
 
 // Log environment information
 logger.environment({
